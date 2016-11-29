@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/content_main_screen"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".UI.HomeScreen"
+    tools:showIn="@layout/app_bar_home_screen"
+    android:background="@android:color/white"
+    android:padding="15dp">
+
+    <android.support.v4.view.ViewPager
+        android:id="@+id/view_pager"
+        android:layout_width="fill_parent"
+        android:layout_height="140dp"
+        android:elevation="3dp"
+        android:layout_marginTop="60dp"
+        android:background="@android:color/holo_blue_bright"/>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:id="@+id/border1"
+        android:background="@android:color/background_light"
+        android:layout_below="@+id/view_pager"
+        android:layout_above="@+id/offersLayout"/>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:id="@+id/border2"
+        android:background="@android:color/background_light"
+        android:layout_below="@+id/offersLayout"
+        android:layout_above="@+id/categoriesText"/>
+
+
+    <ecom.com.mshop.Utils.CirclePageIndicator
+        android:id="@+id/indicator"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@id/view_pager"
+        android:padding="20dp"/>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="75dp"
+        android:elevation="5dp"
+        android:id="@+id/offersLayout"
+        android:layout_below="@+id/view_pager"
+        android:layout_marginTop="15dp"
+        android:background="@color/red"
+        android:padding="15dp">
+
+        <ImageView
+            android:layout_width="45dp"
+            android:layout_height="45dp"
+            android:id="@+id/offerImage"
+            android:layout_alignParentLeft="true"
+            android:src="@drawable/wallet"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/shortdesc"
+            android:layout_toRightOf="@+id/offerImage"
+            android:text="@string/offer_ShortDesc"
+            android:paddingLeft="10dp"
+            android:textColor="@android:color/white"
+            />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/shortdesc"
+            android:layout_alignLeft="@+id/shortdesc"
+            android:text="@string/offer_DetailedDesc"
+            android:paddingTop="10dp"
+            android:paddingLeft="10dp"
+            android:textColor="@android:color/white"/>
+    </RelativeLayout>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/categoriesText"
+        android:text="@string/browse_categories"
+        android:elevation="5dp"
+        android:paddingTop="10dp"
+        android:paddingLeft="10dp"
+        android:textSize="16dp"
+        android:textStyle="bold"
+        android:textColor="@android:color/black"
+        android:layout_below="@+id/offersLayout" />
+
+    <GridView xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/gridview"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:columnWidth="110dp"
+        android:elevation="5dp"
+        android:numColumns="auto_fit"
+        android:gravity="center"
+        android:layout_below="@+id/categoriesText"
+        android:paddingTop="15dp" />
+
+</RelativeLayout>

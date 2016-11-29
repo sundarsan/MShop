@@ -1,0 +1,98 @@
+
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/scrollView1"
+    android:layout_width="fill_parent"
+    android:fitsSystemWindows="true"
+    android:layout_height="fill_parent"
+    android:background="@color/colorPrimary">
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:background="@color/colorPrimary"
+        android:orientation="vertical"
+        android:layout_gravity="center_vertical">
+        <LinearLayout android:layout_width="307dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="40dp"
+            android:layout_marginBottom="40dp"
+            android:layout_gravity="center_horizontal"
+            android:orientation="vertical"
+            android:background="@drawable/greybackground">
+
+            <ImageView
+                android:layout_width="180dp"
+                android:layout_height="30dp"
+                android:src="@drawable/mydin_logo"
+                android:layout_gravity="center_horizontal|center_vertical"/>
+                <EditText
+                    android:id="@+id/input_name"
+                    android:layout_marginTop="20dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="textPersonName"
+                    android:hint="Name" />
+
+                <EditText android:id="@+id/input_memberID"
+                    android:layout_marginTop="10dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="textPostalAddress"
+                    android:hint="MemberId" />
+                <EditText android:id="@+id/input_email"
+                    android:layout_marginTop="10dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="textEmailAddress"
+                    android:hint="Email" />
+                <EditText android:id="@+id/input_mobile"
+                    android:layout_width="match_parent"
+                    android:layout_marginTop="10dp"
+                    android:layout_height="wrap_content"
+                    android:inputType="number"
+                    android:hint="Mobile Number" />
+                <EditText android:id="@+id/input_password"
+                    android:layout_width="match_parent"
+                    android:layout_marginTop="10dp"
+                    android:layout_height="wrap_content"
+                    android:inputType="textPassword"
+                    android:hint="Password"/>
+                <EditText android:id="@+id/input_reEnterPassword"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="textPassword"
+                    android:layout_marginTop="10dp"
+                    android:hint="Confirm Password"/>
+            <android.support.v7.widget.AppCompatButton
+                android:id="@+id/btn_signup"
+                android:layout_width="250dp"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="12dp"
+                android:layout_marginTop="12dp"
+                android:padding="10dp"
+                android:gravity="center"
+                android:layout_gravity="center"
+                android:background="@color/colorPrimaryDark"
+                android:text="Create Account"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:id="@+id/link_login"
+                android:textColor="@color/colorPrimaryDark"
+                android:text="Already an User?Login"
+                android:textSize="12dp"
+                android:layout_gravity="center_horizontal" />
+
+        </LinearLayout>
+
+        <LinearLayout android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+        </LinearLayout>
+    </LinearLayout>
+
+
+
+</ScrollView>
