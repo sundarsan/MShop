@@ -40,10 +40,8 @@ public class CartlistAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     public int getItemViewType(int position) {
         if(position == cartItems.size() - 1 && position !=0){
             return 2;
-        }else if(position>=0 && position< cartItems.size()-1) {
+        }else {
             return 1;
-        }else{
-            return 3;
         }
 
     }
@@ -68,10 +66,10 @@ public class CartlistAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                 View viewTWO = inflater.from(parent.getContext()).inflate(R.layout.activity_price, parent, false);
                 viewHolder= new PriceListViewHolder(viewTWO,context);
                 break;
-            case 3:
-                View price = inflater.from(parent.getContext()).inflate(R.layout.activity_price, parent, false);
-                viewHolder= new PriceListViewHolder(price,context);
-                break;
+//            case 3:
+//                View price = inflater.from(parent.getContext()).inflate(R.layout.activity_price, parent, false);
+//                viewHolder= new PriceListViewHolder(price,context);
+//                break;
         }
         return viewHolder;
     }

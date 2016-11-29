@@ -54,6 +54,7 @@ public class GridViewAdapter extends BaseAdapter {
             ImageView imageViewAndroid = (ImageView) gridViewAndroid.findViewById(R.id.android_gridview_image);
             textViewAndroid.setText(gridViewString[i]);
             imageViewAndroid.setImageResource(gridViewImageId[i]);
+            gridViewAndroid.setBackgroundResource(R.drawable.grid_items_border);
 
         } else {
             gridViewAndroid = (View) convertView;

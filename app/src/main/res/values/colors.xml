@@ -10,6 +10,7 @@
     <color name="white">#FFFFFF</color>
     <color name="red">#ef6c00</color>
     <color name="blue">#0d47a1</color>
+    <color name="dark_grey">#A9A9A9</color>
 
     <color name="holo_blue_dark">#ff0099cc</color>
     <color name="view_divider_color">#BABABA</color>
