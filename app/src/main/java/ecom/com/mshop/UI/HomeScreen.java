@@ -115,7 +115,7 @@ public class HomeScreen extends AppCompatActivity
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 dialog.setMessage("Loading.... ");
-                dialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
+                dialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
                 dialog.setIndeterminate(true);
                 dialog.show();
                 Call<ProductDetail> call = mshopApi.getAllProduct();
@@ -253,7 +253,9 @@ public class HomeScreen extends AppCompatActivity
                 startActivity(intent);
             case R.id.action_logout:
                 Intent intent1= new Intent(this,LoginActivity.class);
+                dbHelper.userLogout(0);
                 startActivity(intent1);
+                finish();
             default:
                 return super.onOptionsItemSelected(item);
 
@@ -306,7 +308,9 @@ public class HomeScreen extends AppCompatActivity
 
         }  else if (id == R.id.nav_logout) {
             Intent intent= new Intent(this,LoginActivity.class);
+            dbHelper.userLogout(0);
             startActivity(intent);
+            finish();
 
         }
         drawer.closeDrawer(GravityCompat.START);
@@ -318,13 +322,17 @@ public class HomeScreen extends AppCompatActivity
     protected void onActivityResult(final int requestCode, int resultCode, Intent intent) {
         super.onActivityResult(requestCode, resultCode, intent);
         final IntentResult scanResult = IntentIntegrator.parseActivityResult(requestCode, resultCode, intent);
-        if (scanResult != null) {
+        if (scanResult.getContents() != null) {
             // handle scan result
             Log.v("BarcodeActivity Result", scanResult.getContents());
             Call<Items> call = mshopApi.getProduct(scanResult.getContents());
             call.enqueue(new Callback<Items>() {
                 @Override
                 public void onResponse(Call<Items> call, Response<Items> response) {
+                    dialog.setMessage("Loading.... ");
+                    dialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+                    dialog.setIndeterminate(true);
+                    dialog.show();
                     Items items = response.body();
                     Intent itemDetailScreenIntent = new Intent(getApplicationContext() , ProductDetails.class);
                     itemDetailScreenIntent.putExtra("productDetail",items);

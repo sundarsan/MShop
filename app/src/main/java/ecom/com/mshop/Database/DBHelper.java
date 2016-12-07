@@ -321,6 +321,13 @@ public class DBHelper extends SQLiteOpenHelper{
 
     }
 
+    public long userLogout(int logout){
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put("USER_LOGGED_IN", logout);
+        return db.update(USER_TABLE, values, null, null);
+    }
+
     public UserDetails.UserData getUserdata(){
         SQLiteDatabase db = this.getReadableDatabase();
         String sql = "SELECT * FROM " + USER_TABLE;

@@ -32,13 +32,8 @@ public class SplashActivity extends AppCompatActivity {
             intent.putExtra("name",data.getUserName());
             intent.putExtra("email",data.getEmailID());
             startActivity(intent);
-            finish();
-        }else {
-//            Intent loginIntent = new Intent(getApplicationContext() , LoginActivity.class);
-//            startActivity(loginIntent);
-//            finish();
-//        }
 
+        }else {
             PaperOnboardingEngine engine = new PaperOnboardingEngine(findViewById(R.id.onboardingRootView), getDataForOnboarding(), getApplicationContext());
 
             engine.setOnChangeListener(new PaperOnboardingOnChangeListener() {
@@ -48,7 +43,6 @@ public class SplashActivity extends AppCompatActivity {
 
                 }
             });
-
             engine.setOnRightOutListener(new PaperOnboardingOnRightOutListener() {
                 @Override
                 public void onRightOut() {
@@ -56,6 +50,7 @@ public class SplashActivity extends AppCompatActivity {
                     Toast.makeText(getApplicationContext(), "Swiped out right", Toast.LENGTH_SHORT).show();
                     Intent loginIntent = new Intent(getApplicationContext(), LoginActivity.class);
                     startActivity(loginIntent);
+                    finish();
 
                 }
             });
