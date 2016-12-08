@@ -6,8 +6,11 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.widget.Toast;
+
+import java.util.ArrayList;
 import java.util.List;
 import ecom.com.mshop.Adapters.CartlistAdapter;
 import ecom.com.mshop.Database.DBHelper;
@@ -15,6 +18,7 @@ import ecom.com.mshop.Database.Items;
 import ecom.com.mshop.R;
 import java.security.SecureRandom;
 import java.math.BigInteger;
+import java.util.Objects;
 
 /**
  * Created by Pandey on 21-11-2016.
@@ -22,25 +26,44 @@ import java.math.BigInteger;
 public class CartItems extends AppCompatActivity implements CartlistAdapter.OnSharingOptionSelected {
     private RecyclerView recyclerView;
     private CartlistAdapter cartlistAdapter;
-    private List<Items.ProductsData> cart;
     private DBHelper dbHelper;
     private int size=0;
     private int total=0;
     private SecureRandom random;
+    private List<Object> itemsCart;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         random = new SecureRandom();
         dbHelper = new DBHelper(this);
-        cart = dbHelper.getItemFromCart();
+        itemsCart = dbHelper.getItemFromCart();
         setContentView(R.layout.activity_items);
         recyclerView = (RecyclerView) findViewById(R.id.itemListView);
-        if(!cart.isEmpty()){
-            cartlistAdapter = new CartlistAdapter(this, cart);
-            RecyclerView.LayoutManager mLayoutManager = new GridLayoutManager(this, 1);
-            recyclerView.setLayoutManager(mLayoutManager);
+        if(!itemsCart.isEmpty()){
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    int size =itemsCart.size()-1;
+                    int cart_count=itemsCart.size();
+                    float cost=0;
+                    float sum =0;
+                    while(size>=0){
+                        Items.ProductsData items = (Items.ProductsData) itemsCart.get(size);
+                        cost = items.getItemQuantity() * items.getItemPrice();
+                        sum = sum + cost;
+                        size--;
+                    }
+                    CartCheckOut cartCheckOut = new CartCheckOut(cart_count,sum);
+                    itemsCart.add(cartCheckOut);
+                }
+            });
+
+            final LinearLayoutManager layoutManager = new LinearLayoutManager(this);
+            layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
+            recyclerView.setLayoutManager(layoutManager);
             recyclerView.setItemAnimator(new DefaultItemAnimator());
+            cartlistAdapter = new CartlistAdapter(this, itemsCart);
             recyclerView.setAdapter(cartlistAdapter);
         } else{
             Intent intent = new Intent(this,EmptyCart.class);
@@ -53,27 +76,21 @@ public class CartItems extends AppCompatActivity implements CartlistAdapter.OnSh
     @Override
     public void onOptionSelected(int id, int position) {
         if(id== R.id.checkout){
-            int size =cart.size();
-            int cart_count=size;
-            float sum =0;
-            while(size>0){
-                Items.ProductsData items = cart.get(position);
-                float cost = items.getItemQuantity() * items.getItemPrice();
-                sum = sum + cost;
-                size--;
-            }
+            CartCheckOut cartCheckOut = (CartCheckOut) itemsCart.get(position);
             String random=nextSessionId();
             Intent intent = new Intent(this,CheckOut.class);
             intent.putExtra("coupon",random);
-            intent.putExtra("total",String.valueOf(sum));
-            intent.putExtra("count",String.valueOf(cart_count));
+            intent.putExtra("total",String.valueOf(cartCheckOut.getTotalBill()));
+            intent.putExtra("count",String.valueOf(cartCheckOut.getCount()));
 
             startActivity(intent);
         }else if(id== R.id.deleteItem){
-            dbHelper.removeItem(cart.get(position).getItemID());
-            cart= dbHelper.getItemFromCart();
-            if(!cart.isEmpty()){
-                cartlistAdapter = new CartlistAdapter(this, cart);
+            Items.ProductsData items = (Items.ProductsData) itemsCart.get(position);
+            int itemId = items.getItemID();
+            dbHelper.removeItem(itemId);
+            itemsCart= dbHelper.getItemFromCart();
+            if(!itemsCart.isEmpty()){
+                cartlistAdapter = new CartlistAdapter(this, itemsCart);
                 RecyclerView.LayoutManager mLayoutManager = new GridLayoutManager(this, 1);
                 recyclerView.setLayoutManager(mLayoutManager);
                 recyclerView.setItemAnimator(new DefaultItemAnimator());
@@ -92,7 +109,7 @@ public class CartItems extends AppCompatActivity implements CartlistAdapter.OnSh
     @Override
     protected void onResume() {
         super.onResume();
-        if(cart.size()==0){
+        if(itemsCart.size()==0){
             Intent intent = new Intent(this,EmptyCart.class);
             startActivity(intent);
             Toast.makeText(this,"Your Cart is empty!Please order.",Toast.LENGTH_LONG).show();
@@ -103,4 +120,25 @@ public class CartItems extends AppCompatActivity implements CartlistAdapter.OnSh
         public String nextSessionId() {
             return new BigInteger(130, random).toString(32);
         }
+
+    public class CartCheckOut{
+        private int count;
+        private float totalBill;
+
+        public CartCheckOut(int count,float totalBill){
+            this.count=count;
+            this.totalBill=totalBill;
+        }
+
+        public int getCount() {
+            return count;
+        }
+
+
+        public float getTotalBill() {
+            return totalBill;
+        }
+
+
+    }
 }

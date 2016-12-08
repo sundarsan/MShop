@@ -20,15 +20,16 @@ import java.util.List;
 
 import ecom.com.mshop.Database.Items;
 import ecom.com.mshop.R;
+import ecom.com.mshop.UI.CartItems;
 import ecom.com.mshop.UI.ItemDetails;
 
 /**
  * Created by Pandey on 21-11-2016.
  */
 public class CartlistAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
-    List<Items.ProductsData> cartItems;
+    List<Object> cartItems;
     Context context;
-    public CartlistAdapter(Context context, List<Items.ProductsData> cart) {
+    public CartlistAdapter(Context context, List<Object> cart) {
         this.context=context;
         this.cartItems=cart;
     }
@@ -38,38 +39,28 @@ public class CartlistAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
     @Override
     public int getItemViewType(int position) {
-        if(position == cartItems.size() - 1 && position !=0){
-            return 2;
-        }else {
+        if(cartItems.get(position) instanceof Items.ProductsData ){
             return 1;
+        }else {
+            return 2;
         }
 
-    }
-
-    private void setAnimation(FrameLayout container, int position) {
-        Animation animation = AnimationUtils.loadAnimation(context, android.R.anim.slide_in_left);
-        container.startAnimation(animation);
     }
 
 
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         RecyclerView.ViewHolder viewHolder = null;
-        LayoutInflater inflater = LayoutInflater.from(parent.getContext());
         switch (viewType) {
             case 1:
-                View viewONE = inflater.from(parent.getContext()).inflate(R.layout.cart_item_list, parent, false);
+                View viewONE = LayoutInflater.from(parent.getContext()).inflate(R.layout.cart_item_list, parent, false);
                 viewHolder= new CartListViewHolder(viewONE,context);
                 break;
 
             case 2:
-                View viewTWO = inflater.from(parent.getContext()).inflate(R.layout.activity_price, parent, false);
+                View viewTWO = LayoutInflater.from(parent.getContext()).inflate(R.layout.activity_price, parent, false);
                 viewHolder= new PriceListViewHolder(viewTWO,context);
                 break;
-//            case 3:
-//                View price = inflater.from(parent.getContext()).inflate(R.layout.activity_price, parent, false);
-//                viewHolder= new PriceListViewHolder(price,context);
-//                break;
         }
         return viewHolder;
     }
@@ -85,37 +76,24 @@ public class CartlistAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                 PriceListViewHolder vh2 = (PriceListViewHolder)holder;
                 configureViewHolderPrice(vh2,position);
                 break;
-            case 3:
-                PriceListViewHolder vh3 = (PriceListViewHolder)holder;
-                configureViewHolderPrice(vh3,position);
-                break;
         }
     }
 
     private void configureViewHolderPrice(PriceListViewHolder vh2, int position) {
-        int size =cartItems.size();
-        int cart_count=size;
-        float sum =0;
-        while(size>0){
-            Items.ProductsData items = cartItems.get(position);
-            float cost = items.getItemQuantity() * items.getItemPrice();
-            sum = sum + cost;
-            size--;
-        }
-        vh2.getQuantity().setText(String.valueOf(cart_count));
-        vh2.getPrice().setText(String.valueOf(sum));
-
+        CartItems.CartCheckOut checkOut = (CartItems.CartCheckOut)cartItems.get(position);
+        vh2.getQuantity().setText(String.valueOf(checkOut.getCount()));
+        vh2.getPrice().setText(String.valueOf(checkOut.getTotalBill()));
     }
 
     private void configureViewHoldercart(CartListViewHolder vh1, int position) {
-        Items.ProductsData productsData= cartItems.get(position);
+        Items.ProductsData productsData= (Items.ProductsData) cartItems.get(position);
         String url = productsData.getItemIamgeURL();
         float price = productsData.getItemPrice();
         String prodprice= "$"+String.valueOf(price);
         Glide.with(context)
                 .load(url)
                 .into(vh1.getImageView());
-        vh1.getQuantity().setText(String.valueOf(cartItems.get(position).getItemQuantity()));
+        vh1.getQuantity().setText(String.valueOf(productsData.getItemQuantity()));
         vh1.getProductprice().setText(prodprice);
         vh1.getProdName().setText(productsData.getItemName());
         vh1.getProdCompsnyname().setText(productsData.getItemDescription());

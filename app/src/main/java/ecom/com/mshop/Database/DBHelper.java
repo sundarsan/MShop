@@ -15,7 +15,7 @@ import ecom.com.mshop.Utils.UserDetails;
 public class DBHelper extends SQLiteOpenHelper{
 
     private static final String DB_NAME = "mShopDB";
-    private static final int DATABASE_VERSION = 2;
+    private static final int DATABASE_VERSION = 3;
     private static final String ITEM_TABLE_NAME = "ITEM_TABLE";
     private static final String FAV_CART="ITEM_IN_CART";
     private static final String USER_TABLE="USER_TABLE";
@@ -39,7 +39,7 @@ public class DBHelper extends SQLiteOpenHelper{
             "ITEM_IMAGE_URL TEXT, " +
             "ITEM_DESCRIPTION TEXT, " +
             "ITEM_ADDRESS TEXT, " +
-            "ITEM_COUNT, " +
+            "ITEM_COUNT INTEGER, " +
             "ITEM_ID INTEGER PRIMARY KEY NOT NULL " +
             ")";
 
@@ -243,11 +243,11 @@ public class DBHelper extends SQLiteOpenHelper{
         }
     }
 
-    public List<Items.ProductsData> getItemFromCart(){
+    public ArrayList<Object> getItemFromCart(){
         SQLiteDatabase db = this.getReadableDatabase();
         String sql = "SELECT * FROM " + FAV_CART;
         Cursor cursor = db.rawQuery(sql,null);
-        ArrayList<Items.ProductsData> cart= new ArrayList<>();
+        ArrayList<Object> cart= new ArrayList<>();
         if(cursor.moveToFirst()){
             do{
                 Items items = new Items();
