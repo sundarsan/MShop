@@ -2,6 +2,7 @@ package ecom.com.mshop.UI;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -24,38 +25,78 @@ import ecom.com.mshop.Utils.ProductDetail;
  */
 public class ProductDetails extends AppCompatActivity {
 
-    private ImageView itemImage;
+
+    private ImageView itemImage,addItem,removeItem;
     private TextView itemname,itemPrice,itemDescription,address,countItem;
     private Button addtocart;
     private DBHelper db;
     private LinearLayout linearLayout;
+    private final Handler handler = new Handler();
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.item_details);
-        final Items items = (Items) getIntent().getSerializableExtra("productDetail");
+        final Items item = (Items) getIntent().getSerializableExtra("productDetail");
+        final Items.ProductsData items = item.getProductsData();
         db= new DBHelper(this);
-        linearLayout=(LinearLayout)findViewById(R.id.add_remove);
+        addItem=(ImageView)findViewById(R.id.addItem);
+        removeItem=(ImageView)findViewById(R.id.removeItem);
         itemImage=(ImageView)findViewById(R.id.item_imageView);
+        addItem=(ImageView)findViewById(R.id.addItem);
+        removeItem=(ImageView)findViewById(R.id.removeItem);
+        countItem=(TextView)findViewById(R.id.countItem);
         itemname=(TextView)findViewById(R.id.product_name);
         address=(TextView)findViewById(R.id.prod_address);
         itemDescription=(TextView)findViewById(R.id.item_name);
         itemPrice=(TextView)findViewById(R.id.prod_price);
         addtocart=(Button)findViewById(R.id.add_to_cart);
-        countItem=(TextView)findViewById(R.id.countItem);
-        Glide.with(this).load(items.getProductsData().getItemIamgeURL()).into(itemImage);
-        itemname.setText(items.getProductsData().getItemName());
-        address.setText(items.getProductsData().getItemLocation());
-        itemDescription.setText(items.getProductsData().getItemDescription());
-        itemPrice.setText(String.valueOf(items.getProductsData().getItemPrice()));
-        String price= "$"+" " + items.getProductsData().getItemPrice();
-        linearLayout.setVisibility(View.INVISIBLE);
+        Glide.with(this).load(items.getItemIamgeURL()).into(itemImage);
+        itemname.setText(items.getItemName());
+        address.setText(items.getItemLocation());
+        itemDescription.setText(items.getItemDescription());
+        itemPrice.setText(String.valueOf(items.getItemPrice()));
+        String price= "$"+" " + items.getItemPrice();
+        final int count= Integer.valueOf(countItem.getText().toString());
         itemPrice.setText(price);
+        addItem.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                handler.post(new Runnable() {
+
+                    @Override
+                    public void run() {
+                        int newcount= Integer.valueOf(countItem.getText().toString()) +1;
+                        countItem.setText(String.valueOf(newcount));
+                    }
+                });
+            }
+        });
+
+
+        removeItem.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                handler.post(new Runnable() {
+                    int local= Integer.valueOf(countItem.getText().toString());
+                    @Override
+                    public void run() {
+                        if(local>1){
+                            int newcount=local-1;
+                            countItem.setText(String.valueOf(newcount));
+                        }else{
+                            countItem.setText("1");
+                        }
+                    }
+                });
+
+            }
+        });
+
         addtocart.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
-                long res=db.inSertIntoFavCart(items.getProductsData().getItemName(),items.getProductsData().getItemIamgeURL(),items.getProductsData().getItemPrice(),items.getProductsData().getItemDescription(),items.getProductsData().getItemLocation(),items.getProductsData().getItemID(),Integer.valueOf(countItem.getText().toString()));
+                long res=db.inSertIntoFavCart(items.getItemName(),items.getItemIamgeURL(),items.getItemPrice(),items.getItemDescription(),items.getItemLocation(),items.getItemID(),Integer.valueOf(countItem.getText().toString()));
                 if(res==0){
                     Log.d("ItemDetails","Failed Transaction");
                 }else{
@@ -67,4 +108,5 @@ public class ProductDetails extends AppCompatActivity {
         });
 
     }
+
 }

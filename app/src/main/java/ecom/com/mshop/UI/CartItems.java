@@ -90,6 +90,23 @@ public class CartItems extends AppCompatActivity implements CartlistAdapter.OnSh
             dbHelper.removeItem(itemId);
             itemsCart= dbHelper.getItemFromCart();
             if(!itemsCart.isEmpty()){
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        int size =itemsCart.size()-1;
+                        int cart_count=itemsCart.size();
+                        float cost=0;
+                        float sum =0;
+                        while(size>=0){
+                            Items.ProductsData items = (Items.ProductsData) itemsCart.get(size);
+                            cost = items.getItemQuantity() * items.getItemPrice();
+                            sum = sum + cost;
+                            size--;
+                        }
+                        CartCheckOut cartCheckOut = new CartCheckOut(cart_count,sum);
+                        itemsCart.add(cartCheckOut);
+                    }
+                });
                 cartlistAdapter = new CartlistAdapter(this, itemsCart);
                 RecyclerView.LayoutManager mLayoutManager = new GridLayoutManager(this, 1);
                 recyclerView.setLayoutManager(mLayoutManager);
