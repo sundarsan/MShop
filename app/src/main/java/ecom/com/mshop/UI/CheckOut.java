@@ -22,7 +22,7 @@ public class CheckOut extends AppCompatActivity {
         couponcode=(TextView)findViewById(R.id.coupon_code);
 
         Intent intent = getIntent();
-        String total=intent.getStringExtra("total");
+        String total= "$ " + intent.getStringExtra("total");
         String coupon = intent.getStringExtra("coupon");
         String count =  intent.getStringExtra("count");
         price.setText(total);
