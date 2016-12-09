@@ -1,7 +1,6 @@
 package ecom.com.mshop.UI;
 
 import android.content.Intent;
-import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
@@ -9,8 +8,6 @@ import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.widget.Toast;
-
-import java.util.ArrayList;
 import java.util.List;
 import ecom.com.mshop.Adapters.CartlistAdapter;
 import ecom.com.mshop.Database.DBHelper;
@@ -27,10 +24,9 @@ public class CartItems extends AppCompatActivity implements CartlistAdapter.OnSh
     private RecyclerView recyclerView;
     private CartlistAdapter cartlistAdapter;
     private DBHelper dbHelper;
-    private int size=0;
-    private int total=0;
     private SecureRandom random;
     private List<Object> itemsCart;
+    private String coupon;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -40,6 +36,7 @@ public class CartItems extends AppCompatActivity implements CartlistAdapter.OnSh
         itemsCart = dbHelper.getItemFromCart();
         setContentView(R.layout.activity_items);
         recyclerView = (RecyclerView) findViewById(R.id.itemListView);
+        coupon=nextSessionId();
         if(!itemsCart.isEmpty()){
             runOnUiThread(new Runnable() {
                 @Override
@@ -63,7 +60,7 @@ public class CartItems extends AppCompatActivity implements CartlistAdapter.OnSh
             layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
             recyclerView.setLayoutManager(layoutManager);
             recyclerView.setItemAnimator(new DefaultItemAnimator());
-            cartlistAdapter = new CartlistAdapter(this, itemsCart);
+            cartlistAdapter = new CartlistAdapter(this, itemsCart,coupon);
             recyclerView.setAdapter(cartlistAdapter);
         } else{
             Intent intent = new Intent(this,EmptyCart.class);
@@ -107,7 +104,7 @@ public class CartItems extends AppCompatActivity implements CartlistAdapter.OnSh
                         itemsCart.add(cartCheckOut);
                     }
                 });
-                cartlistAdapter = new CartlistAdapter(this, itemsCart);
+                cartlistAdapter = new CartlistAdapter(this, itemsCart,coupon);
                 RecyclerView.LayoutManager mLayoutManager = new GridLayoutManager(this, 1);
                 recyclerView.setLayoutManager(mLayoutManager);
                 recyclerView.setItemAnimator(new DefaultItemAnimator());
@@ -135,7 +132,7 @@ public class CartItems extends AppCompatActivity implements CartlistAdapter.OnSh
 
 
         public String nextSessionId() {
-            return new BigInteger(130, random).toString(32);
+            return new BigInteger(130, random).toString(32).substring(0,16);
         }
 
     public class CartCheckOut{

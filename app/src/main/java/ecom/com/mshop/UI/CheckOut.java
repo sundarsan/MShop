@@ -12,21 +12,20 @@ import ecom.com.mshop.R;
  * Created by Pandey on 25-11-2016.
  */
 public class CheckOut extends AppCompatActivity {
-    private TextView price,quantity,couponcode;
+    private TextView price,quantity,finalprice;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_checkout);
         price= (TextView) findViewById(R.id.chk_price_button);
         quantity=(TextView)findViewById(R.id.chk_total_items);
-        couponcode=(TextView)findViewById(R.id.coupon_code);
-
+        finalprice=(TextView)findViewById(R.id.final_price);
         Intent intent = getIntent();
-        String total= "$ " + intent.getStringExtra("total");
-        String coupon = intent.getStringExtra("coupon");
+        float total= Float.valueOf(intent.getStringExtra("total"));
+        float finalPrice= total - (total/5);
         String count =  intent.getStringExtra("count");
-        price.setText(total);
+        price.setText("$ " + String.valueOf(total));
         quantity.setText(count);
-        couponcode.setText(coupon);
+        finalprice.setText("$" + String.valueOf(finalPrice));
     }
 }

@@ -13,7 +13,7 @@ import ecom.com.mshop.UI.CartItems;
  * Created by Pandey on 25-11-2016.
  */
 public class PriceListViewHolder extends RecyclerView.ViewHolder implements  View.OnClickListener{
-    private TextView quantity,price;
+    private TextView quantity,price,couponcode;
     private Button checkOut;
     Context context;
     public PriceListViewHolder(View itemView, Context context) {
@@ -21,6 +21,7 @@ public class PriceListViewHolder extends RecyclerView.ViewHolder implements  Vie
         quantity = (TextView)itemView.findViewById(R.id.total_items);
         price= (TextView)itemView.findViewById(R.id.price_button);
         checkOut=(Button)itemView.findViewById(R.id.checkout);
+        couponcode=(TextView)itemView.findViewById(R.id.coupon_code);
         this.context= context;
         if(checkOut!=null){
             checkOut.setOnClickListener(this);
@@ -49,5 +50,13 @@ public class PriceListViewHolder extends RecyclerView.ViewHolder implements  Vie
 
     public void setPrice(TextView price) {
         this.price = price;
+    }
+
+    public TextView getCouponcode() {
+        return couponcode;
+    }
+
+    public void setCouponcode(TextView couponcode) {
+        this.couponcode = couponcode;
     }
 }

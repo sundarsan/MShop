@@ -29,9 +29,11 @@ import ecom.com.mshop.UI.ItemDetails;
 public class CartlistAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     List<Object> cartItems;
     Context context;
-    public CartlistAdapter(Context context, List<Object> cart) {
+    String coupon;
+    public CartlistAdapter(Context context, List<Object> cart,String coupon) {
         this.context=context;
         this.cartItems=cart;
+        this.coupon = coupon;
     }
 
 
@@ -82,7 +84,8 @@ public class CartlistAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     private void configureViewHolderPrice(PriceListViewHolder vh2, int position) {
         CartItems.CartCheckOut checkOut = (CartItems.CartCheckOut)cartItems.get(position);
         vh2.getQuantity().setText(String.valueOf(checkOut.getCount()));
-        vh2.getPrice().setText(String.valueOf(checkOut.getTotalBill()));
+        vh2.getPrice().setText("$ " +String.valueOf(checkOut.getTotalBill()));
+        vh2.getCouponcode().setText(coupon);
     }
 
     private void configureViewHoldercart(CartListViewHolder vh1, int position) {
