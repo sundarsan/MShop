@@ -105,6 +105,7 @@
             android:text="MNVBJBKVGHD@163849"
             android:textSize="16dp"
             android:id="@+id/coupon_code"
+            android:layout_marginRight="20dp"
             android:layout_alignParentBottom="true"
             android:layout_alignParentStart="true"
             android:layout_toStartOf="@+id/checkout" />
@@ -112,8 +113,10 @@
         <Button
             android:layout_width="150dp"
             android:layout_height="wrap_content"
-            android:background="@color/colorPrimaryDark"
+            android:background="@color/colorPrimary"
             android:text="CheckOut"
+            android:elevation="10dp"
+            android:textColor="@android:color/white"
             android:id="@+id/checkout"
             android:layout_below="@+id/coupon_name"
             android:layout_toEndOf="@+id/items_product_name" />

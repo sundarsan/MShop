@@ -15,7 +15,6 @@ import ecom.com.mshop.Database.Items;
 import ecom.com.mshop.R;
 import java.security.SecureRandom;
 import java.math.BigInteger;
-import java.util.Objects;
 
 /**
  * Created by Pandey on 21-11-2016.
